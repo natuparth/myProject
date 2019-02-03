@@ -11,13 +11,16 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
+import { CrudService } from './crudServices/crud.service';
+import { UpdateListComponent } from './main/update-list/update-list.component';
 @NgModule({
   declarations: [
     AppComponent,
     MainComponent,
     GroceryComponent,
     ExpenseComponent,
-    HomeComponent
+    HomeComponent,
+    UpdateListComponent
   ],
   imports: [FormsModule,
     BrowserModule,
@@ -26,7 +29,7 @@ import { environment } from '../environments/environment';
     AngularFirestoreModule, 
     AngularFireAuthModule, 
   ],
-  providers: [],
+  providers: [CrudService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

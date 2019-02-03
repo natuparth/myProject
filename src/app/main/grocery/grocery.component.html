@@ -1,3 +1,88 @@
-<p>
-  grocery works!
-</p>
+<button class="btn btn-primary" (click)="makeModalVisible()"> Add Item</button>
+<div *ngIf="!modelHidden"  >
+ <form action="post" class="form-inline" #inputForm="ngForm" (submit)="addItem(inputForm.value)">
+            <label for="name">Name</label>
+            <input name="name" class="form-control" [(ngModel)]="name" type="text">
+            <label for="dateOfLastPurchase"> Date</label>
+            <input name="dateOfLastPurchase" class="form-control" [(ngModel)]="dateOfLastPurchase" type="date">
+            <label for="quantity">Quantity(in gms)</label>
+            <input name="quantity" class="form-control" [(ngModel)]="quantity" type="number">
+            <label for="price">Amount
+            </label>
+            <input name="price" class="form-control" [(ngModel)]="price" type="number">
+            <div class="modal-footer text-center">
+                <button type="submit" class="btn btn-danger" data-dismiss="modal">Add Item</button>
+            </div>
+            </form>
+      
+  </div>
+
+  <table class="table table-dark">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Days Left</th> 
+          
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of Items | async ;let i = index">
+          <th scope="row">{{i}}</th>
+          <td>{{item.name}}</td>
+          <td>{{item.quantity}}</td>
+          <button class="btn btn-info" (click)="openModal(item.name)" >Update</button>
+          
+        </tr>
+        
+      </tbody>
+    </table>
+
+    <div class="backdrop" [ngStyle]="{'display':display}"></div>
+    
+    
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
+    
+    
+      <div class="modal-dialog" role="document">
+    
+    
+        <div class="modal-content">
+    
+    
+          <div class="modal-header">
+    
+            <h4 class="modal-title">Update Item</h4>
+            <button type="button" class="close" aria-label="Close" (click)="onCloseHandled()"><span aria-hidden="true">&times;</span></button>
+    
+          </div>
+    
+    
+          <div class="modal-body">
+    
+    
+              <form action="post" class="form form-group" #inputForm="ngForm" (submit)="updateItem(inputForm.value)">
+                  <label for="name">Name</label>
+                  <input name="name" class="form-control" [(ngModel)]="name" type="text" [value]="itemName">
+                  <label for="dateOfLastPurchase"> Date</label>
+                  <input name="dateOfLastPurchase" class="form-control" [(ngModel)]="dateOfLastPurchase" type="date">
+                  <label for="quantity">Quantity(in gms)</label>
+                  <input name="quantity" class="form-control" [(ngModel)]="quantity" type="number">
+                  <label for="price">Amount
+                  </label>
+                  <input name="price" class="form-control" [(ngModel)]="price" type="number">
+                  <div class="modal-footer text-center">
+                      <button type="submit" class="btn btn-danger" data-dismiss="modal">Add Item</button>
+                  </div>
+                  </form>
+    
+    
+          </div>
+    
+        </div>
+    
+    
+      </div>
+    
+    
+    </div>
