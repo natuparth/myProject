@@ -3,6 +3,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { Item } from 'src/app/models/item.model';
 import { CrudService } from 'src/app/crudServices/crud.service';
 import {Observable} from 'rxjs';
+import { NgForm } from '@angular/forms';
 @Component({
   selector: 'app-grocery',
   templateUrl: './grocery.component.html',
@@ -12,12 +13,13 @@ export class GroceryComponent implements OnInit {
 public modelHidden:boolean;
 Items:Observable<Item[]>;  
 display:String='none';
-itemName:String;
+itemName:string;
 constructor(private crudService:CrudService) { 
 
 }
   
   addItem(item:any){
+    console.log(item)
     this.crudService.addItem(item);
     this.modelHidden=true;
   }
@@ -41,7 +43,7 @@ constructor(private crudService:CrudService) {
     this.modelHidden=true;
   }
   openModal(name:String){
-this.itemName=name;
+this.itemName=name as string;
 this.display='block';
 
   }
@@ -50,7 +52,8 @@ this.display='block';
   }
 
    updateItem(item:any){
-     this.crudService.updateItem(item);
+     console.log(this.itemName);
+     this.crudService.updateItem(item,this.itemName);
 
    }
 }

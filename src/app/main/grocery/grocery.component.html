@@ -61,9 +61,9 @@
           <div class="modal-body">
     
     
-              <form action="post" class="form form-group" #inputForm="ngForm" (submit)="updateItem(inputForm.value)">
+              <form #inputFormTwo="ngForm" class="form form-group"  (submit)="updateItem(inputFormTwo.value)">
                   <label for="name">Name</label>
-                  <input name="name" class="form-control" [(ngModel)]="name" type="text" [value]="itemName">
+                  <input name="name" class="form-control" type="text" [placeholder]="itemName">
                   <label for="dateOfLastPurchase"> Date</label>
                   <input name="dateOfLastPurchase" class="form-control" [(ngModel)]="dateOfLastPurchase" type="date">
                   <label for="quantity">Quantity(in gms)</label>
@@ -72,9 +72,9 @@
                   </label>
                   <input name="price" class="form-control" [(ngModel)]="price" type="number">
                   <div class="modal-footer text-center">
-                      <button type="submit" class="btn btn-danger" data-dismiss="modal">Add Item</button>
+                      <button type="submit" class="btn btn-danger" >Add Item</button>
                   </div>
-                  </form>
+               </form>
     
     
           </div>
