@@ -32,4 +32,7 @@ import { UpdateListComponent } from './main/update-list/update-list.component';
   providers: [CrudService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+ 
+ }

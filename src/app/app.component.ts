@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+//import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +10,8 @@ import { Router } from '@angular/router';
 export class AppComponent {
   title = 'myProject';
 constructor(private router:Router){
+  // const db=firebase.firestore();
+  // db.settings({timestampsInSnapshots:true});
 this.router.navigate(['home']);
 }
 

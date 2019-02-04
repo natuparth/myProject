@@ -11,7 +11,7 @@ export class CrudService {
   items: Observable<Item[]>;
   newItem:any;
   constructor(private firestore:AngularFirestore) { 
-
+  
   }
   addItem(item:any){
        
@@ -19,10 +19,25 @@ export class CrudService {
 }
   updateItem(item:any,name:string){
    console.log(item.name);
+   var docRef = this.firestore.collection("shoppingList").doc(name);
+
+   docRef.get().subscribe((snapshot)=>{
+    console.log(snapshot.data());
+    this.newItem={
+      name:name,
+      dateOfLastPurchase:item.dateOfLastPurchase,
+      price:snapshot.data().price,
+      quantity:snapshot.data().quantity+item.quantity
+    }
+    this.firestore.collection('shoppingList').doc(name).set(this.newItem);
+  
+   });
+   
+
+
     // this.newItem=this.firestore.collection('shoppingList').doc(item.name);
     // this.newItem.quantity+=item.quantity;
     // this.newItem.dateOfLastPurchase=item.dateOfLastPurchase;
-     this.firestore.collection('shoppingList').doc(name).set(item);
   }
   getList(){
     this.itemsCol=this.firestore.collection('shoppingList');
