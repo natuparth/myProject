@@ -13,6 +13,8 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 import { CrudService } from './crudServices/crud.service';
 import { UpdateListComponent } from './main/update-list/update-list.component';
+import {FirebaseModule, FirebaseProvider} from 'angular-firebase'
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,9 +29,10 @@ import { UpdateListComponent } from './main/update-list/update-list.component';
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule, 
-    AngularFireAuthModule, 
+    AngularFireAuthModule,
+    FirebaseModule, 
   ],
-  providers: [CrudService],
+  providers: [CrudService,FirebaseProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule {

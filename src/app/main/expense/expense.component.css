@@ -1,0 +1,52 @@
+.ExpenseContainer
+{
+    background-image: linear-gradient(black,#333333,black);
+    color:#fff;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+    top:55px;
+    transition: 0.1s;
+    text-align: center;
+}
+.MembersContainer
+{
+    color:#fff;
+    width:20%;
+    height: 100%;
+    position: absolute;
+    z-index: 2;
+    /* left:40%; */
+    background-color: rgba(0, 0, 0, 0);
+    padding-top: 100px;
+    box-shadow: 3px 0px #333333;
+    text-align: center;
+}
+.WelcomeContainer
+{
+    color: #fff;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    padding-top: 200px;
+    position: absolute;
+    z-index: 3;
+    transition: 0.1s;
+}
+.MemberList
+{
+    position: absolute;
+    width: 100%;
+    min-height: 80xp;
+    height: auto;
+    text-align: center;
+    padding-top: 25px;
+    border-radius: 20%;
+    background-color: inherit;
+    color: #bbbbbb;
+    font-size: 20px;
+}
+.MemberList:hover{
+    background-color: #000;
+}
