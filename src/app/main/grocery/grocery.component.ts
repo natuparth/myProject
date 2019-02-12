@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Item } from 'src/app/models/item.model';
 import { CrudService } from 'src/app/crudServices/crud.service';
 import {Observable} from 'rxjs';
@@ -12,9 +12,13 @@ import { NgForm } from '@angular/forms';
 export class GroceryComponent implements OnInit {
 public modelHidden:boolean;
 Items:Observable<Item[]>;  
+  itemsCol: AngularFirestoreCollection<Item>;
+    
 display:String='none';
 itemName:string;
-constructor(private crudService:CrudService) { 
+filteredList:any[]=[];
+itemsArray:any[]=[];
+constructor(private crudService:CrudService,private firestore:AngularFirestore) { 
 
 }
   
@@ -56,4 +60,51 @@ this.display='block';
      this.crudService.updateItem(item,this.itemName);
 
    }
-}
+ 
+  shoppingList(){
+  //this.filteredList=this.crudService.getItems();
+      // this.crudService.getItems().then(
+      //   res=>{
+      //     console.log("promise resolved");
+      //     console.log(res);
+        
+      //   }),
+      //   ()=>{
+      //     console.log("promise rejected");
+      //   }  
+
+
+
+      // }
+
+
+
+    this.itemsCol=this.firestore.collection('shoppingList');
+  this.itemsCol.get().subscribe(doc=>{
+  doc.docs.forEach(docu=>{
+   this.itemsArray.push(docu.data());
+   console.log(docu.data());
+
+  });
+  console.log(this.itemsArray);
+  for(let item of this.itemsArray){
+    var date1=new Date();
+    let date2=new Date(item.dateOfLastPurchase);
+    var diff = Math.abs(date2.getTime() - date1.getTime());
+    var diffDays = Math.ceil(diff / (1000 * 3600 * 24)); 
+   // console.log(diffDays);
+   }
+   
+   
+
+   });
+
+ 
+  
+
+  
+   } 
+
+}  
+
+
