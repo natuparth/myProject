@@ -3,7 +3,6 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { Item } from '../models/item.model';
 import { Users } from '../models/users.model'
 import { Observable, config } from 'rxjs';
-import {FirebaseProvider} from 'angular-firebase';
 import { error } from '@angular/compiler/src/util';
 import { User } from 'firebase';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -19,7 +18,7 @@ export class CrudService {
   usersCol: AngularFirestoreCollection<Users>
   newItem:any;
   userid:string;
-  constructor(private firestore:AngularFirestore,private firebase:FirebaseProvider) { 
+  constructor(private firestore:AngularFirestore) { 
   }
   addItem(item:any){
        
@@ -29,24 +28,24 @@ export class CrudService {
    console.log(item.name);
    var docRef = this.firestore.collection("shoppingList").doc(name);
 
-   docRef.get().subscribe((snapshot)=>{
-    console.log(snapshot.data());
-    this.newItem={
-      name:name,
-      dateOfLastPurchase:item.dateOfLastPurchase,
-      price:snapshot.data().price,
-      quantity:snapshot.data().quantity+item.quantity
-    }
-    this.firestore.collection('shoppingList').doc(name).set(this.newItem);
+  //  docRef.get().subscribe((snapshot)=>{
+  //   console.log(snapshot.data());
+  //   this.newItem={
+  //     name:name,
+  //     dateOfLastPurchase:item.dateOfLastPurchase,
+  //     price:snapshot.data().price,
+  //     quantity:snapshot.data().quantity+item.quantity
+  //   }
+    this.firestore.collection('shoppingList').doc(name).set(item);
   
-   });
    
-
-
-    // this.newItem=this.firestore.collection('shoppingList').doc(item.name);
-    // this.newItem.quantity+=item.quantity;
-    // this.newItem.dateOfLastPurchase=item.dateOfLastPurchase;
   }
+
+  getItem(name:string){
+   return this.firestore.collection('shoppingList').doc(name).get();
+
+  }
+
   getList(){
     this.itemsCol=this.firestore.collection('shoppingList');
      this.items=this.itemsCol.valueChanges();
