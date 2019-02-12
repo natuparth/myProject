@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Item } from '../models/item.model';
-import { Observable } from 'rxjs';
+import { Users } from '../models/users.model'
+import { Observable, config } from 'rxjs';
+import {FirebaseProvider} from 'angular-firebase';
+import { error } from '@angular/compiler/src/util';
+import { User } from 'firebase';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireDatabase} from 'angularfire2/database';
 
 @Injectable({
   providedIn: 'root'
@@ -9,9 +15,11 @@ import { Observable } from 'rxjs';
 export class CrudService {
   itemsCol: AngularFirestoreCollection<Item>;
   items: Observable<Item[]>;
+  users:any[]=[];// Observable<Users[]>;
+  usersCol: AngularFirestoreCollection<Users>
   newItem:any;
-  constructor(private firestore:AngularFirestore) { 
-  
+  userid:string;
+  constructor(private firestore:AngularFirestore,private firebase:FirebaseProvider) { 
   }
   addItem(item:any){
        
@@ -46,4 +54,6 @@ export class CrudService {
      //return this.firestore.collection('shoppingList').doc('shoppingList').collection('list').snapshotChanges();
       
   }
+
+  
 }
