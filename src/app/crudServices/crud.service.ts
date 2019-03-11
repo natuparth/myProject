@@ -53,9 +53,8 @@ export class CrudService {
       data.forEach(data=>{
       this.users.push(data);
        console.log(data);
-      });
-    }
-    ).then(dat=>{
+        })
+      }).then(dat=>{
       console.log(this.users, dat);
       return this.users;});
     
