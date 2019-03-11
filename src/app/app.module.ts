@@ -12,8 +12,7 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 import { CrudService } from './crudServices/crud.service';
-import { UpdateListComponent } from './main/update-list/update-list.component';
-import {FirebaseModule, FirebaseProvider} from 'angular-firebase'
+import { ShoppingListComponent } from './main/shopping-list/shopping-list.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +21,7 @@ import {FirebaseModule, FirebaseProvider} from 'angular-firebase'
     GroceryComponent,
     ExpenseComponent,
     HomeComponent,
-    UpdateListComponent
+    ShoppingListComponent
   ],
   imports: [FormsModule,
     BrowserModule,
@@ -30,9 +29,9 @@ import {FirebaseModule, FirebaseProvider} from 'angular-firebase'
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule, 
     AngularFireAuthModule,
-    FirebaseModule, 
+     
   ],
-  providers: [CrudService,FirebaseProvider],
+  providers: [CrudService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
