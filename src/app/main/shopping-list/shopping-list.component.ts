@@ -23,7 +23,7 @@ export class ShoppingListComponent implements OnInit {
    (itemsList: Item[])=>{
 //     this.items=itemsList;
      itemsList.forEach((data)=>{
-      // console.log((new Date().getTime()-new Date(data.dateOfLastPurchase).getTime())/(1000*3600*24));
+   // console.log((new Date().getTime()-new Date(data.dateOfLastPurchase).getTime())/(1000*3600*24));
        //console.log(data.quantity-(data.consumptionPerDay*(new Date().getTime()-new Date(data.dateOfLastPurchase).getTime())/(1000*3600*24)));
        if(data.quantity-(data.consumptionPerDay*(new Date().getTime()-new Date(data.dateOfLastPurchase).getTime())/(1000*3600*24))<=5)
            this.items.push(data);
