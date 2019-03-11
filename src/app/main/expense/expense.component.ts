@@ -4,6 +4,7 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { element } from '@angular/core/src/render3';
 import { functions } from 'firebase';
 import { snapshotChanges } from 'angularfire2/database';
+import { NgForm } from "@angular/forms";
 
 @Component({
   selector: 'app-expense',
@@ -11,35 +12,79 @@ import { snapshotChanges } from 'angularfire2/database';
   styleUrls: ['./expense.component.css']
 })
 export class ExpenseComponent implements OnInit {
-  membersList:any=[];
-  welcomeFlag:boolean=true;
+  membersList:any[]=[];
+  itemList:any=[];
+  previousUserId:number=0;
   memberListTranslate:any=[];
   memberListPos='40%';
-  memberListTranslatePos=-20;
+  memberListTranslatePos=-165;
+  currentUserId:number=-1;
+  welcomeFlag:boolean=true;
+  sideBarExpand:boolean=true;
+  additemflag:boolean=false;
   constructor(private crudService:CrudService,private firestore:AngularFirestore) { }
 
   ngOnInit() {
     console.log('inside expense management component')
-      this.GetUsers();
-      this.welcomeFlag=true;
+    this.GetUsers();
+    console.log(this.membersList.length);
+    this.welcomeFlag=true;
   }
   
   MemberFunction(index:any)
   {
-    console.log('memberfunction id:'+this.membersList[index].id);
-    console.log(this.memberListTranslate[0]);
-    this.memberListPos='1%'
+    this.currentUserId=index;
+    console.log('memberfunction id:'+this.currentUserId);
     this.welcomeFlag=false;
+    
+    if(this.previousUserId!=this.currentUserId || this.previousUserId==0)
+    {
+      this.membersList[this.previousUserId].background=false;
+      this.membersList[index].background=true;
+      this.previousUserId=this.currentUserId;
+      this.GetUserValues(this.membersList[index].id);
+    }
   }
 
-  GetUserValues(id:any)
+  async GetUserValues(id:string)
   {
+    this.itemList=[];
     console.log('inside get uservalues function id: '+id);
+    var temp=this;
+    try
+    {
+      await this.firestore.collection('expenses').doc(id).collection('list')
+      .get()
+      .subscribe(function(querysnapshot)
+      {
+        console.log('inside get items subscribe');
+        var  count=0;
+        querysnapshot.forEach(function(doc)
+        {
+          temp.itemList.push(
+                  {index:count++,
+                    id:doc.id,
+                    date:doc.data().dateOfPurchase,
+                    desc:doc.data().description,
+                    price:doc.data().price,
+                    name:doc.data().name,
+                    quant:doc.data().quantity
+                  });
+          // console.log('itemList: ',temp.itemList);
+        })
+      });
+    }
+    catch(e)
+    {
+      console.log('user fetch error');
+      alert(e.message);
+    }
   }
 
   async GetUsers()
   {
     var temp=this;
+    this.membersList=[];
     console.log('inside expense get user');
     try
     {
@@ -50,19 +95,26 @@ export class ExpenseComponent implements OnInit {
         var count=0;
         querysnapshot.forEach(function(doc)
         {
-          //console.log(doc.id+' '+doc.data().name+count++);
-          temp.membersList.push({index:count++,id:doc.id,name:doc.data().name});
-          temp.memberListTranslate.push('translate(0px,'+(temp.memberListTranslatePos+count*55)+'px)');
-          console.log(temp.membersList);
-          console.log(temp.memberListTranslate[count-1]);
+          temp.membersList.push({index:count++,id:doc.id,name:doc.data().name,background:false});
+          temp.memberListTranslate.push('translate('+(temp.memberListTranslatePos+count*55)+'px,0px)');
         })
       })
-      console.log('sadsd'+this.membersList[0])
     }
     catch(e)
     {
       console.log('user fetch error');
       alert(e.message);
     }
+  }
+  AddItem()
+  {
+    this.additemflag=true;
+  }
+  AddItemSubmit(form: NgForm) 
+  {
+    console.log(form.value.itemName);
+    console.log(form.value.itemPrice);
+    console.log(form.value.dateOfPurchase);
+    console.log(form.value.itemDescription);
   }
 }

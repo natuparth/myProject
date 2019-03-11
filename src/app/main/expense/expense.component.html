@@ -1,9 +1,174 @@
-<div (mouseover)="hover=true" (mouseleave)="hover=false" class="ExpenseContainer">
-    <div *ngIf='hover || !welcomeFlag' class="MembersContainer"[ngStyle]="{ left:memberListPos }">
-        <div class="MemberList" id="member.id" (click)='MemberFunction(member.index)' [ngStyle]="{ transform : memberListTranslate[member.index]}" *ngFor="let member of membersList">{{member.id}}</div>
+<div class="Expensecontainer">
+    <div class="Welcomecontainer" *ngIf='welcomeFlag && !membersList.length'>
+        <p>Welcome</p>
+        <div class="Loading"
+            [ngStyle]="{'animation-name':'Loadinganimation',
+                    'animation-duration':'3s',
+                    'animation-iteration-count': 'infinite',
+                    'animation-direction':'alternate',
+                    'animation-delay':i/5+'s'}"
+                    *ngFor='let i of [0,1,2,3,4]'>
+        </div>
     </div>
-    <div *ngIf='!hover && welcomeFlag' class="WelcomeContainer">Welcome To Haveli Manegement System</div>
+    <div class='Membercontainer row' *ngIf='welcomeFlag && membersList.length'>
+        <div class='ProfileContainer column'
+            (click)='MemberFunction(member.index)'
+            *ngFor='let member of membersList'
+            [ngStyle]="{'transform':memberListTranslate[member.index]}"><p>{{member.id}}</p></div>
+    </div>
+    <div class="Welcomecontainer" *ngIf='!welcomeFlag && !itemList.length'>
+        <p>Please Wait...</p>
+        <div class="Loading"
+            [ngStyle]="{'animation-name':'Loadinganimation',
+                    'animation-duration':'3s',
+                    'animation-iteration-count': 'infinite',
+                    'animation-direction':'alternate',
+                    'animation-delay':i/5+'s'}"
+                    *ngFor='let i of [0,1,2,3,4]'>
+        </div>
+    </div>
+    <div *ngIf='itemList.length || !welcomeFlag'
+        (mouseover)="hover=true" (mouseleave)="hover=false"
+        class="Sidebar">
+        <div *ngIf='sideBarExpand'
+            class="SideIcons">
+            <ul *ngIf='hover'>
+                <li (click)='MemberFunction(member.index)'
+                    [ngStyle]="{'background-image':member.background==true ? 'radial-gradient(#00000030,#00000080)':'',
+                                'color':member.background==true ? 'white':'black'}"
+                    class="TableClass"
+                    *ngFor='let member of membersList'>{{member.id}}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="Itemscontainer"
+        *ngIf='itemList.length && !welcomeFlag &&!additemflag'>
+        <div class="row">
+            <div class="col">&nbsp;</div>
+        </div>
+        <div class="row">
+            <div class="col text-center">
+              <button (click)='AddItem()' class="button btn ">Add Items</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">&nbsp;</div>
+        </div>
+        <table class="table table-dark">
+            <thead>
+                <tr>
+                  <th scope="col">#List</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of itemList ;let i = index">
+                      <th scope="row">{{i}}</th>
+                      <td>{{item.name}}</td>
+                      <td>{{item.quant}}</td>
+                      <td>{{item.price}}</td>
+                      <td>{{item.date.seconds * 1000 | date: 'yyyy-MM-dd'}}</td>
+                      <td>{{item.desc}}</td>
+                      <button class="btn btn-info">Update</button>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="AddItem" *ngIf='additemflag'>
+        <div class="AddItemData">
+            <form #AddItemForm="ngForm" (ngSubmit)="AddItemSubmit(AddItemForm)">
+                <div class="row" style="text-align:center"> 
+                    <div class="col"><h4>All Fields are Mandatory</h4></div>
+                </div>
+                &nbsp;
+                &nbsp;
+                <div class="row">
+                    <div class="col-md-5" style="text-align:right">
+                        <label>Item Name</label>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input type="text" 
+                                name="itemName" 
+                                #itemnameref="ngModel"  
+                                ngModel required
+                                pattern="^[\w-]{1,}">
+                    </div>
+                </div>
+                <div style="text-align:left; padding-top:5px; color:red;">
+                    <div [hidden]="(itemnameref.valid || itemnameref.pristine) && (itemnameref.dirty || !itemnameref.touched)">
+                        <p>&nbsp; Item Name is mandatory</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5" style="text-align:right">
+                        <label>Price</label>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input type="number" 
+                                name="itemPrice" 
+                                #itempriceref="ngModel"  
+                                ngModel required
+                                pattern="^[0-9]{1,}">
+                    </div>
+                </div>
+                <div style="text-align:left; padding-top:5px; color:red;">
+                    <div [hidden]="itempriceref.valid || itempriceref.pristine">
+                        <p>&nbsp; Item Price is mandatory and positive</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5" style="text-align:right">
+                        <label>Date Of Purchase</label>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input type="date" 
+                                name="dateOfPurchase" 
+                                #dateOfPurchaseref="ngModel"  
+                                ngModel required>
+                    </div>
+                </div>
+                <div style="text-align:left; padding-top:5px; color:red;">
+                    <div [hidden]="dateOfPurchaseref.valid || dateOfPurchaseref.pristine">
+                        <p>&nbsp; Date is mandatory</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5" style="text-align:right">
+                        <label>Description</label>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input type="text" 
+                                name="itemDescription" 
+                                #itemDescriptionref="ngModel"  
+                                ngModel required
+                                pattern="^[\w-]{1,}">
+                    </div>
+                </div>
+                <div style="text-align:left; padding-top:5px; color:red;">
+                    <div [hidden]="itemDescriptionref.valid || itemDescriptionref.pristine">
+                        <p>&nbsp; Give a Small Description</p>
+                    </div>
+                </div>
+                &nbsp;
+                &nbsp;
+                <div class="row">
+                    <div class="col text-center">
+                        <button type="submit" class="button btn ">Add Items</button>
+                    </div>
+                </div>
+                &nbsp;
+                &nbsp;
+            </form>
+        </div>
+    </div>
 </div>
 
-<!-- *ngIf="hover || welcomeFlag" -->
-<!-- *ngIf="!hover && welcomeFlag" -->
+
