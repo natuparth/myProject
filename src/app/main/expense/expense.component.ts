@@ -64,7 +64,7 @@ export class ExpenseComponent implements OnInit {
           temp.itemList.push(
                   {index:count++,
                     id:doc.id,
-                    date:doc.data().dateOfPurchase,
+                    date:doc.data().dateOfPurchase as Date,
                     desc:doc.data().description,
                     price:doc.data().price,
                     name:doc.data().name,
@@ -112,7 +112,18 @@ export class ExpenseComponent implements OnInit {
   }
   AddItemSubmit(item:any) 
   {
-    console.log(this.membersList[this.currentUserId].id+item.name+' '+item.price+' '+item.quantity+' '+item.dateOfPurchase+' '+item.description);
-    this.firestore.collection('expenses').doc(this.membersList[this.currentUserId].id).collection('list').doc(item.name).set(item);
+    var count;
+    var countMap={count:null};
+    this.firestore.collection('expenses').doc(this.membersList[this.currentUserId].id)
+    .get().subscribe(
+      doc=>{
+        count=doc.data().count;
+        count++;
+        countMap.count=count;
+        this.firestore.collection('expenses').doc(this.membersList[this.currentUserId].id).collection('list').doc(count.toString()).set(item);
+        this.firestore.collection('expenses').doc(this.membersList[this.currentUserId].id).update(countMap);
+      }
+    );
+   // console.log(this.membersList[this.currentUserId].id+item.name+' '+item.price+' '+item.quantity+' '+item.dateOfPurchase+' '+item.description+' '+count);
   }
 }
