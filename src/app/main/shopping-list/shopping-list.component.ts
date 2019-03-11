@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { CrudService } from 'src/app/crudServices/crud.service';
+import { Observable } from 'rxjs';
+import { Item } from 'src/app/models/item.model';
 
 @Component({
   selector: 'app-shopping-list',
@@ -6,10 +9,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./shopping-list.component.css']
 })
 export class ShoppingListComponent implements OnInit {
-
-  constructor() { }
+ Items:Observable<Item[]>;
+ items:any[];
+  constructor(private crudService:CrudService) { }
 
   ngOnInit() {
+
+    this.items=this.crudService.getFilteredList();
+    console.log(this.items);
   }
 
 }

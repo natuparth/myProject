@@ -5,6 +5,7 @@ import { MainComponent } from './main/main.component';
 import { GroceryComponent } from './main/grocery/grocery.component';
 import { ExpenseComponent } from './main/expense/expense.component';
 import { HomeComponent } from './home/home.component';
+import { ShoppingListComponent } from './main/shopping-list/shopping-list.component';
 
 const routes: Routes = [
   { path: ' ', redirectTo:'home'   },
@@ -16,6 +17,9 @@ const routes: Routes = [
      },
      {
        path:'expense', component:ExpenseComponent
+     },
+     {
+       path:'shopping', component:ShoppingListComponent
      }
 
    ]

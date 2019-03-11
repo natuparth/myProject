@@ -7,6 +7,7 @@ import { error } from '@angular/compiler/src/util';
 import { User } from 'firebase';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase} from 'angularfire2/database';
+import * as firebase from 'firebase';
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +45,20 @@ export class CrudService {
   getItem(name:string){
    return this.firestore.collection('shoppingList').doc(name).get();
 
+  }
+  getFilteredList():any{
+    var db=firebase.firestore();
+    var collections=db.collection('shoppingList');
+    collections.where("quantity-("+((new Date().getTime()-new Date("dateOfLastPurchase").getTime())/(1000*3600*24))+")",">=","5").get().then(data=>{
+      data.forEach(data=>
+      this.users.push(data);
+       console.log(data);
+      );
+    }
+    ).then(dat=>{
+      console.log(this.users, dat);
+      return this.users;});
+    
   }
 
   getList(){
