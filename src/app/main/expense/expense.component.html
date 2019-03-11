@@ -80,7 +80,7 @@
     </div>
     <div class="AddItem" *ngIf='additemflag'>
         <div class="AddItemData">
-            <form #AddItemForm="ngForm" (ngSubmit)="AddItemSubmit(AddItemForm)">
+            <form #AddItemForm="ngForm" autocomplete="on" (ngSubmit)="AddItemSubmit(AddItemForm.value)">
                 <div class="row" style="text-align:center"> 
                     <div class="col"><h4>All Fields are Mandatory</h4></div>
                 </div>
@@ -93,7 +93,7 @@
                     <div class="col-md-6">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                         <input type="text" 
-                                name="itemName" 
+                                name="name" 
                                 #itemnameref="ngModel"  
                                 ngModel required
                                 pattern="^[\w-]{1,}">
@@ -111,14 +111,32 @@
                     <div class="col-md-6">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                         <input type="number" 
-                                name="itemPrice" 
+                                name="price" 
                                 #itempriceref="ngModel"  
                                 ngModel required
                                 pattern="^[0-9]{1,}">
                     </div>
                 </div>
                 <div style="text-align:left; padding-top:5px; color:red;">
-                    <div [hidden]="itempriceref.valid || itempriceref.pristine">
+                    <div [hidden]="(itempriceref.valid || itempriceref.pristine) && (itempriceref.dirty || !itempriceref.touched)">
+                        <p>&nbsp; Item Price is mandatory and positive</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5" style="text-align:right">
+                        <label>Quantity</label>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input type="number" 
+                                name="quantity" 
+                                #quantityref="ngModel"  
+                                ngModel required
+                                pattern="^[0-9]{1,}">
+                    </div>
+                </div>
+                <div style="text-align:left; padding-top:5px; color:red;">
+                    <div [hidden]="(quantityref.valid || quantityref.pristine) && (quantityref.dirty || !quantityref.touched)">
                         <p>&nbsp; Item Price is mandatory and positive</p>
                     </div>
                 </div>
@@ -135,7 +153,7 @@
                     </div>
                 </div>
                 <div style="text-align:left; padding-top:5px; color:red;">
-                    <div [hidden]="dateOfPurchaseref.valid || dateOfPurchaseref.pristine">
+                    <div [hidden]="(dateOfPurchaseref.valid || dateOfPurchaseref.pristine) && (dateOfPurchaseref.dirty || !dateOfPurchaseref.touched)">
                         <p>&nbsp; Date is mandatory</p>
                     </div>
                 </div>
@@ -146,14 +164,14 @@
                     <div class="col-md-6">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                         <input type="text" 
-                                name="itemDescription" 
+                                name="description" 
                                 #itemDescriptionref="ngModel"  
                                 ngModel required
-                                pattern="^[\w-]{1,}">
+                                pattern="[a-zA-Z][a-zA-Z0-9\s]*">
                     </div>
                 </div>
                 <div style="text-align:left; padding-top:5px; color:red;">
-                    <div [hidden]="itemDescriptionref.valid || itemDescriptionref.pristine">
+                    <div [hidden]="(itemDescriptionref.valid || itemDescriptionref.pristine) && (itemDescriptionref.dirty || !itemDescriptionref.touched)">
                         <p>&nbsp; Give a Small Description</p>
                     </div>
                 </div>
@@ -161,7 +179,7 @@
                 &nbsp;
                 <div class="row">
                     <div class="col text-center">
-                        <button type="submit" class="button btn ">Add Items</button>
+                        <button [disabled]='!AddItemForm.valid' type="submit" class="button btn ">Add Items</button>
                     </div>
                 </div>
                 &nbsp;

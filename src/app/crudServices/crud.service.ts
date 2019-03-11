@@ -50,10 +50,10 @@ export class CrudService {
     var db=firebase.firestore();
     var collections=db.collection('shoppingList');
     collections.where("quantity-("+((new Date().getTime()-new Date("dateOfLastPurchase").getTime())/(1000*3600*24))+")",">=","5").get().then(data=>{
-      data.forEach(data=>
+      data.forEach(data=>{
       this.users.push(data);
        console.log(data);
-      );
+      });
     }
     ).then(dat=>{
       console.log(this.users, dat);

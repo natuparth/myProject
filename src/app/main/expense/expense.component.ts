@@ -110,11 +110,9 @@ export class ExpenseComponent implements OnInit {
   {
     this.additemflag=true;
   }
-  AddItemSubmit(form: NgForm) 
+  AddItemSubmit(item:any) 
   {
-    console.log(form.value.itemName);
-    console.log(form.value.itemPrice);
-    console.log(form.value.dateOfPurchase);
-    console.log(form.value.itemDescription);
+    console.log(this.membersList[this.currentUserId].id+item.name+' '+item.price+' '+item.quantity+' '+item.dateOfPurchase+' '+item.description);
+    this.firestore.collection('expenses').doc(this.membersList[this.currentUserId].id).collection('list').doc(item.name).set(item);
   }
 }
