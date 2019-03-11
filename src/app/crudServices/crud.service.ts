@@ -46,17 +46,17 @@ export class CrudService {
    return this.firestore.collection('shoppingList').doc(name).get();
 
   }
-  getFilteredList():any{
-    var db=firebase.firestore();
-    var collections=db.collection('shoppingList');
-    collections.where("quantity-("+((new Date().getTime()-new Date("dateOfLastPurchase").getTime())/(1000*3600*24))+")",">=","5").get().then(data=>{
-      data.forEach(data=>{
-      this.users.push(data);
-       console.log(data);
-        })
-      }).then(dat=>{
-      console.log(this.users, dat);
-      return this.users;});
+  getFilteredList():Observable<Item[]>{
+    this.itemsCol=this.firestore.collection('shoppingList');
+    this.items=this.itemsCol.valueChanges();// collections.where("quantity-("+((new Date().getTime()-new Date("dateOfLastPurchase").getTime())/(1000*3600*24))+")",">=","5").get().then(data=>{
+    return this.items;
+    //   data.forEach(data=>{
+    //   this.users.push(data);
+    //    console.log(data);
+    //     })
+    //   }).then(dat=>{
+    //   console.log(this.users, dat);
+    //   return this.users;});
     
   }
 
