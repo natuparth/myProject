@@ -13,6 +13,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 import { CrudService } from './crudServices/crud.service';
 import { ShoppingListComponent } from './main/shopping-list/shopping-list.component';
+import { TestComponent } from './test/test.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { ShoppingListComponent } from './main/shopping-list/shopping-list.compon
     GroceryComponent,
     ExpenseComponent,
     HomeComponent,
-    ShoppingListComponent
+    ShoppingListComponent,
+    TestComponent
   ],
   imports: [FormsModule,
     BrowserModule,

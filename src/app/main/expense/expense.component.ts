@@ -95,7 +95,7 @@ export class ExpenseComponent implements OnInit {
         var count=0;
         querysnapshot.forEach(function(doc)
         {
-          temp.membersList.push({index:count++,id:doc.id,name:doc.data().name,background:false});
+          temp.membersList.push({index:count++,id:doc.id,name:doc.data().name,background:false,pic:'../assets/'+doc.id.toLocaleLowerCase()+'.jpg'});
           temp.memberListTranslate.push('translate('+(temp.memberListTranslatePos+count*55)+'px,0px)');
         })
       })
