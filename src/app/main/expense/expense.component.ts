@@ -122,6 +122,9 @@ export class ExpenseComponent implements OnInit {
         countMap.count=count;
         this.firestore.collection('expenses').doc(this.membersList[this.currentUserId].id).collection('list').doc(count.toString()).set(item);
         this.firestore.collection('expenses').doc(this.membersList[this.currentUserId].id).update(countMap);
+      this.additemflag = false;
+      this.GetUserValues(this.membersList[this.currentUserId].id);
+      alert('item has been added successfully');
       }
     );
    // console.log(this.membersList[this.currentUserId].id+item.name+' '+item.price+' '+item.quantity+' '+item.dateOfPurchase+' '+item.description+' '+count);
