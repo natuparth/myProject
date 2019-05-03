@@ -13,7 +13,11 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 import { CrudService } from './crudServices/crud.service';
 import { ShoppingListComponent } from './main/shopping-list/shopping-list.component';
+<<<<<<< HEAD
 import { MilkComponent } from './main/milk/milk.component';
+=======
+import { TestComponent } from './test/test.component';
+>>>>>>> 3ac69c770e359823c68169bb1b361419779e685b
 
 @NgModule({
   declarations: [
@@ -23,7 +27,11 @@ import { MilkComponent } from './main/milk/milk.component';
     ExpenseComponent,
     HomeComponent,
     ShoppingListComponent,
+<<<<<<< HEAD
     MilkComponent
+=======
+    TestComponent
+>>>>>>> 3ac69c770e359823c68169bb1b361419779e685b
   ],
   imports: [FormsModule,
     BrowserModule,

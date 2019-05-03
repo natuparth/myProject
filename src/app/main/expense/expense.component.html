@@ -1,3 +1,15 @@
+<!--<div class='Membercontainer row' *ngIf='welcomeFlag && membersList.length'> 
+    <div class='ProfileContainer column'
+            (click)='MemberFunction(member.index)'
+            *ngFor='let member of membersList'
+            [ngStyle]="{'transform':memberListTranslate[member.index]}"><p>{{member.id}}</p>
+        </div>
+    </div> -->
+
+
+
+
+
 <div class="Expensecontainer">
     <div class="Welcomecontainer" *ngIf='welcomeFlag && !membersList.length'>
         <p>Welcome</p>
@@ -10,12 +22,26 @@
                     *ngFor='let i of [0,1,2,3,4]'>
         </div>
     </div>
-    <div class='Membercontainer row' *ngIf='welcomeFlag && membersList.length'>
-        <div class='ProfileContainer column'
-            (click)='MemberFunction(member.index)'
-            *ngFor='let member of membersList'
-            [ngStyle]="{'transform':memberListTranslate[member.index]}"><p>{{member.id}}</p></div>
-    </div>
+    
+    <section *ngIf='welcomeFlag && membersList.length'>
+        <div class="container" >
+            <div class="row">
+                <div class="col-lg mt-4 outerbox" 
+                    *ngFor='let member of membersList'>
+                    <div class="card box">
+                        <img src={{member.pic}} class="card-img-top" style="height:200px" alt="...">
+                        <h1>{{member.id[0]}}</h1>
+                        <div class="card-body">
+                        <h3 class="card-title">{{member.id}}</h3>
+                        <p class="card-text">Responsible citizens are change agents that act out against social, economic, and environmental injustices.</p>
+                        <a (click)='MemberFunction(member.index)' class="btn btn-primary">View Expense</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
     <div class="Welcomecontainer" *ngIf='!welcomeFlag && !itemList.length'>
         <p>Please Wait...</p>
         <div class="Loading"
