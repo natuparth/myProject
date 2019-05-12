@@ -159,10 +159,10 @@ export class ExpenseComponent implements OnInit {
       }
     );
     //get back to current user expense
-    this.additemflag=false;
-    alert(item.name+' Added successfully');
-    this.previousUserId=0;
-    this.MemberFunction(this.currentUserId);
+    //this.additemflag=false;
+    //alert(item.name+' Added successfully');
+    //this.previousUserId=0;
+    //this.MemberFunction(this.currentUserId);
     } 
     catch (error) 
     {
@@ -189,8 +189,8 @@ export class ExpenseComponent implements OnInit {
       }
     );
     //get back to current user expense
-    this.additemflag=false;
-    alert(item.name+' Added successfully');
+  //  this.additemflag=false;
+ //   alert(item.name+' Added successfully');
     this.previousUserId=0;
     this.MemberFunction(this.currentUserId);
     //end add item function

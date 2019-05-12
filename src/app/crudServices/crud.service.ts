@@ -23,9 +23,17 @@ export class CrudService {
   }
   addItem(item:any){
        
-    this.firestore.collection('shoppingList').doc(item.name).set(item);
+    this.firestore.collection('shoppingList').doc(item.name).set(item).catch(()=>{
+      console.log('cannot add item');
+    });
 }
-  updateItem(item:any,name:string){
+ deleteItem(item: string){
+   this.firestore.collection('shoppingList').doc(item).delete().then(()=>{
+     console.log('item has been deleted successfully');
+     alert('item has been deleted');
+   })
+ }
+  updateItem(item:Item,name:string){
    console.log(item.name);
    var docRef = this.firestore.collection("shoppingList").doc(name);
 
@@ -37,7 +45,7 @@ export class CrudService {
   //     price:snapshot.data().price,
   //     quantity:snapshot.data().quantity+item.quantity
   //   }
-    this.firestore.collection('shoppingList').doc(name).set(item);
+    this.firestore.collection('shoppingList').doc(name).set(Object.assign({},item));
   
    
   }
