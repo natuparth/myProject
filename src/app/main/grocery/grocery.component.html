@@ -1,26 +1,14 @@
 
 <div>
-
   <div class="backdrop" [ngStyle]="{'display':addDisplay}"></div>
-
-
   <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':addDisplay}">
-
-
     <div class="modal-dialog" role="document">
-
-
       <div class="modal-content">
-
-
         <div class="modal-header">
-
           <h4 class="modal-title">Add Item</h4>
           <button type="button" class="close" aria-label="Close" (click)="onCloseHandled('add')"><span
               aria-hidden="true">&times;</span></button>
-
         </div>
-
 
         <div class="modal-body">
           <form class="form-group"  [formGroup]="addItemForm" (ngSubmit)="addItem(inputForm.value)">
@@ -33,17 +21,17 @@
 
             <label for="quantity">Quantity(in gms)</label>
             <input name="quantity" class="form-control" formControlName='quantity' type="number">
-            <p class="help-block text-danger" *ngIf="!addItemForm.get('quantity').valid && addItemForm.get('quantity').touched">Please select a date</p>
+            <p class="help-block text-danger" *ngIf="!addItemForm.get('quantity').valid && addItemForm.get('quantity').touched">Please enter quantity</p>
            
             <label for="price">Amount
             </label>
             <input name="price" class="form-control" formControlName = 'price' type="number">
-            <p class="help-block text-danger" *ngIf="!addItemForm.get('price').valid && addItemForm.get('price').touched">Please select a date</p>
+            <p class="help-block text-danger" *ngIf="!addItemForm.get('price').valid && addItemForm.get('price').touched">Please enter price</p>
  
             <label for="consumptionPerDay">Consumption/Day
             </label>
             <input name="consumptionPerDay" class="form-control" formControlName="consumptionPerDay" type="number">
-            <p class="help-block text-danger" *ngIf="!addItemForm.get('consumptionPerDay').valid && addItemForm.get('consumptionPerDay').touched">Please select a date</p>
+            <p class="help-block text-danger" *ngIf="!addItemForm.get('consumptionPerDay').valid && addItemForm.get('consumptionPerDay').touched">Please enter consumptionPerDay</p>
             
             <div class="modal-footer text-center">
               <button type="submit" class="btn btn-danger" data-dismiss="modal" [disabled]="!addItemForm.valid">Add Item</button>
@@ -128,12 +116,12 @@
 
           <label for="quantity">Quantity(in gms)</label>
           <input name="quantity" class="form-control" formControlName="quantity" type="number">
-          <p class="help-block text-danger" *ngIf="!updateItemForm.get('quantity').valid && updateItemForm.get('quantity').touched">Please select a date</p>
+          <p class="help-block text-danger" *ngIf="!updateItemForm.get('quantity').valid && updateItemForm.get('quantity').touched">Please enter quantity</p>
          
           <label for="price">Amount
           </label>
           <input name="price" class="form-control" formControlName="price" type="number">
-          <p class="help-block text-danger" *ngIf="!updateItemForm.get('price').valid && updateItemForm.get('price').touched">Please select a date</p>
+          <p class="help-block text-danger" *ngIf="!updateItemForm.get('price').valid && updateItemForm.get('price').touched">Please enter amount</p>
 
           <div class="modal-footer text-center">
             <button type="submit" class="btn btn-danger" [disabled] = "!updateItemForm.valid">Update Item</button>

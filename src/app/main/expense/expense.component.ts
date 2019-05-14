@@ -4,7 +4,7 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { element } from '@angular/core/src/render3';
 import { functions } from 'firebase';
 import { snapshotChanges } from 'angularfire2/database';
-import { NgForm } from "@angular/forms";
+import { NgForm, FormGroup, FormControl, Validators } from "@angular/forms";
 
 @Component({
   selector: 'app-expense',
@@ -13,6 +13,8 @@ import { NgForm } from "@angular/forms";
 })
 export class ExpenseComponent implements OnInit {
   membersList:any[]=[];
+  addDisplay: string = 'none';
+  updateDisplay : string ='none';
   itemList:any=[];
   updateItemList:any=[];
   previousUserId:number=0;
@@ -25,6 +27,14 @@ export class ExpenseComponent implements OnInit {
   sideBarExpand:boolean=true;
   additemflag:boolean=false;
   updateitemflag:boolean=false;
+  updateItemForm : FormGroup = new FormGroup({
+    'name' : new FormControl('',Validators.required),
+    'dateOfPurchase' : new FormControl(Date.now,Validators.required),
+    'price' : new FormControl('',Validators.required),  
+    'quantity': new FormControl('',Validators.required),
+    'description': new FormControl('',Validators.required)
+  });
+  addItemForm: FormGroup;
   constructor(private crudService:CrudService,private firestore:AngularFirestore) { }
 
   ngOnInit() {
@@ -32,7 +42,36 @@ export class ExpenseComponent implements OnInit {
     this.GetUsers();
     console.log(this.membersList.length);
     this.welcomeFlag=true;
+    this.addItemForm = new FormGroup({
+      'name' : new FormControl('',Validators.required),
+      'dateOfPurchase' : new FormControl(Date.now,Validators.required),
+      'price' : new FormControl('',Validators.required),
+      'consumptionPerDay' : new FormControl('',Validators.required),
+      'quantity': new FormControl('',Validators.required),
+      'description': new FormControl('',Validators.required)
+    })
   }
+
+openModal(itemId:any, modalName: string){
+    if(modalName=='addModal')
+     {
+       this.addDisplay ='block';
+     }
+     else
+     {
+       this.updateDisplay = 'block';
+       this.UpdateItem(itemId);
+     }
+
+}
+onCloseHandled(name:string){
+  if(name=="addModal")
+    this.addDisplay = 'none';
+  else 
+    this.updateDisplay = 'none';  
+}
+
+
   
   MemberFunction(index:any)
   {
@@ -130,14 +169,21 @@ export class ExpenseComponent implements OnInit {
         temp.updateItemList.push(
           {
             id:doc.id,
-            date:doc.data().dateOfPurchase as Date,
-            desc:doc.data().description,
+            dateOfPurchase:doc.data().dateOfPurchase as Date,
+            description:doc.data().description,
             price:doc.data().price,
             name:doc.data().name,
-            quant:doc.data().quantity
+            quantity:doc.data().quantity
           });
         console.log('inside get update items subscribe',temp.updateItemList);
-        temp.updateitemflag=true;
+      //  temp.updateitemflag=true;
+        temp.updateItemForm.get('name').setValue( temp.updateItemList[0].name); 
+        temp.updateItemForm.get('dateOfPurchase').setValue( temp.updateItemList[0].dateOfPurchase); 
+        temp.updateItemForm.get('description').setValue( temp.updateItemList[0].description); 
+        temp.updateItemForm.get('price').setValue( temp.updateItemList[0].price); 
+        temp.updateItemForm.get('quantity').setValue( temp.updateItemList[0].quantity); 
+   //   temp.updateItemForm.setValue(temp.updateItemList[0]);
+        
       });
     } 
     catch (error) 
@@ -148,28 +194,23 @@ export class ExpenseComponent implements OnInit {
     // console.log('inside update id:',itemId);
   }
 
-  UpdateItemSubmit(item:any)
+  updateItem(item:FormControl)
   {
     try 
     {
-      this.firestore.collection('expenses').doc(this.currentUserName)
-    .get().subscribe(
-      doc=>{
-        this.firestore.collection('expenses').doc(this.membersList[this.currentUserId].id).collection('list').doc(this.updateItemList.id.toString()).set(item);
-      }
-    );
-    //get back to current user expense
-    //this.additemflag=false;
-    //alert(item.name+' Added successfully');
-    //this.previousUserId=0;
-    //this.MemberFunction(this.currentUserId);
+  
+        this.firestore.collection('expenses').doc(this.membersList[this.currentUserId].id).collection('list').doc(this.updateItemList[0].id.toString()).set(this.updateItemForm.value).then(()=>{
+          console.log('updated the item');
+          this.GetUserValues(this.membersList[this.currentUserId].id);
+          this.updateDisplay = 'none';
+        });
     } 
     catch (error) 
     {
       
     }
   }
-  AddItemSubmit(item:any) 
+  addItemSubmit(item:FormGroup) 
   {
     var count;
     var countMap={count:null};
@@ -181,7 +222,7 @@ export class ExpenseComponent implements OnInit {
         count=doc.data().count;
         count++;
         countMap.count=count;
-        this.firestore.collection('expenses').doc(this.membersList[this.currentUserId].id).collection('list').doc(count.toString()).set(item);
+        this.firestore.collection('expenses').doc(this.membersList[this.currentUserId].id).collection('list').doc(count.toString()).set(item.value);
         this.firestore.collection('expenses').doc(this.membersList[this.currentUserId].id).update(countMap);
       this.additemflag = false;
       this.GetUserValues(this.membersList[this.currentUserId].id);
