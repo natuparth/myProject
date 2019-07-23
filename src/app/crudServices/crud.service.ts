@@ -45,7 +45,11 @@ export class CrudService {
   //     price:snapshot.data().price,
   //     quantity:snapshot.data().quantity+item.quantity
   //   }
-    this.firestore.collection('shoppingList').doc(name).set(Object.assign({},item));
+   return this.firestore.collection('shoppingList').doc(name).set(Object.assign({},item)).then(()=>{
+     return 'item updated successfully';
+   }).catch(()=>{
+     return 'item could not be updated';
+   });
   
    
   }

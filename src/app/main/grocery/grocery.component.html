@@ -11,7 +11,7 @@
         </div>
 
         <div class="modal-body">
-          <form class="form-group"  [formGroup]="addItemForm" (ngSubmit)="addItem(inputForm.value)">
+          <form class="form-group"  [formGroup]="addItemForm" (ngSubmit)="addItem(addItemForm)">
             <label for="name">Name</label>
             <input name="name" class="form-control" formControlName="name" type="text" >
             <p class="help-block text-danger" *ngIf="!addItemForm.get('name').valid && addItemForm.get('name').touched">Please enter a name</p>
@@ -67,7 +67,7 @@
       <td>{{item.name}}</td>
       <td>{{item.quantity}}</td>
       <td>{{item.date}}</td>
-      <button class="btn btn-info" (click)="openModal(item.name,item.dateOfLastPurchase)">Update</button>
+      <button class="btn btn-info" (click)="openModal(item.name,item.date)">Update</button>
      &nbsp; <button class="btn btn-danger" (click)="deleteItem(item.name)">Delete</button>
       
 

@@ -8,11 +8,30 @@ import { HomeComponent } from './home/home.component';
 import { ShoppingListComponent } from './main/shopping-list/shopping-list.component';
 import { MilkComponent } from './main/milk/milk.component';
 import { TestComponent } from './test/test.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   { path: ' ', redirectTo:'home'   },
   { path:'test', component:TestComponent},
-  {path: 'home', component:HomeComponent},
+  {path: 'home', component:HomeComponent, children:
+  [ {
+       path: 'login', component:LoginComponent
+    },
+    {
+      path:'grocery',component:GroceryComponent
+    },
+    { path:'test', component:TestComponent},
+    {
+      path:'expense', component:ExpenseComponent
+    },
+    {
+      path:'shopping', component:ShoppingListComponent
+    },
+    {
+      path:'milk', component:MilkComponent
+    }
+
+  ]},
   {path:'main' , component:MainComponent,children:
    [
      {

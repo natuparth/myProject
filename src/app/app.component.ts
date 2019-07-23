@@ -13,6 +13,7 @@ export class AppComponent {
 constructor(private router:Router){
   // const db=firebase.firestore();
   // db.settings({timestampsInSnapshots:true});
+  router.navigate(['/home/login'])
 }
 
 

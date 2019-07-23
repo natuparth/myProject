@@ -15,6 +15,8 @@ import { CrudService } from './crudServices/crud.service';
 import { ShoppingListComponent } from './main/shopping-list/shopping-list.component';
 import { MilkComponent } from './main/milk/milk.component';
 import { TestComponent } from './test/test.component';
+import { ItemFilterPipe } from './item-filter.pipe';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { TestComponent } from './test/test.component';
     HomeComponent,
     ShoppingListComponent,
     MilkComponent,
-    TestComponent
+    TestComponent,
+    ItemFilterPipe,
+    LoginComponent
   ],
   imports: [FormsModule,
     ReactiveFormsModule,

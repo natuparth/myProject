@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Item } from 'src/app/models/item.model';
+import { toArray } from 'rxjs/operators'
 import { CrudService } from 'src/app/crudServices/crud.service';
 import { Observable } from 'rxjs';
 import { NgForm, FormGroup, FormControlName, FormControl, Validators } from '@angular/forms';
@@ -22,6 +23,7 @@ export class GroceryComponent implements OnInit {
   })
   public modelHidden: boolean;
   Items: Observable<Item[]>;
+  itemsList : Array<Item> = [];
   itemsCol: AngularFirestoreCollection<Item>;
   addDisplay : String = 'none';
   display: String = 'none';
@@ -29,13 +31,14 @@ export class GroceryComponent implements OnInit {
   itemDate: Date;
   filteredList: any[] = [];
   itemsArray: any[] = [];
+  filterString = '';
   constructor(private crudService: CrudService, private firestore: AngularFirestore) {
 
   }
 
   addItem(item: any) {
     console.log(item)
-    this.crudService.addItem(item);
+    this.crudService.addItem(item.value);
     this.modelHidden = true;
     alert('item has been added successfully')
     this.addDisplay = 'none';
@@ -53,7 +56,11 @@ export class GroceryComponent implements OnInit {
 
   ngOnInit() {
     //this.crudService.getList().subscribe(data => {
-    this.Items = this.crudService.getList();
+     this.crudService.getList().subscribe(items =>{ 
+     this.itemsList = items;
+       
+      // console.log(this.itemsList)
+     });
       this.addItemForm = new FormGroup({
         'name' : new FormControl('',Validators.required),
         'date' : new FormControl(Date.now,Validators.required),
@@ -61,6 +68,7 @@ export class GroceryComponent implements OnInit {
         'consumptionPerDay' : new FormControl('',Validators.required),
         'quantity': new FormControl('',Validators.required)
       })
+      
 
 
     this.modelHidden = true;
@@ -92,7 +100,9 @@ export class GroceryComponent implements OnInit {
     console.log(this.itemName);
     this.crudService.getItem(this.itemName).subscribe(doc=>{
       var date1 = new Date(this.updateItemForm.get('date').value);
-      let date2 = new Date(doc.data().dateOfLastPurchase);
+      let date2 = new Date(doc.data().date);
+      console.log(date1);
+      console.log(date2);
       var diff = Math.abs(date2.getTime() - date1.getTime());
       var diffDays = Math.ceil(diff / (1000 * 3600 * 24));
       if(diffDays<0)
@@ -102,8 +112,12 @@ export class GroceryComponent implements OnInit {
       console.log(item.quantity);
       item.name=this.itemName;
       item.consumptionPerDay=doc.data().consumptionPerDay;
-      item.dateOfLastPurchase = this.updateItemForm.get('date').value;
-      this.crudService.updateItem(item,this.itemName);
+      item.date = this.updateItemForm.get('date').value;
+     let message= this.crudService.updateItem(item,this.itemName);
+     message.then((value)=>{
+       if(value ==="item updated successfully")
+        this.onCloseHandled('update');
+     })
     });
    // this.crudService.updateItem(item, this.itemName);
 
@@ -132,24 +146,26 @@ export class GroceryComponent implements OnInit {
 
   }
 
-  validateDate(date: Date){
-    console.log(date.toString);
-    console.log(this.itemDate);
-    console.log(this.updateItemForm);
-    if(date.toString()=='')
-    this.updateItemForm.get('date').setErrors({required: true});
-   else if(date < this.itemDate && date.toString()!='')
-    {
-     // alert('the entered date is prior to the last purchase date');
-      this.updateItemForm.get('date').setErrors({'invalidDate': true});
-    }
-    else{
-      this.updateItemForm.get('date').setErrors({'invalidDate': null});
-    }
+  // validateDate(date: Date){
+  //   console.log(date.toString);
+  //   console.log(this.itemDate);
+  //   console.log(this.updateItemForm);
+  //   if(date.toString()=='')
+  //   this.updateItemForm.get('date').setErrors({required: true});
+  //  else if(date < this.itemDate && date.toString()!='')
+  //   {
+  //    // alert('the entered date is prior to the last purchase date');
+  //     this.updateItemForm.get('date').setErrors({'invalidDate': true});
+  //   }
+  //   else{
+  //     this.updateItemForm.get('date').setErrors({'invalidDate': null});
+  //   }
 
-  }
+  // }
 
   dateValidator(control: FormControl): {[s : string] : boolean}{
+    console.log(control.value);
+    console.log(this.itemDate);
     if(control.value < this.itemDate && control.value.toString()!='')
      return {'invalidDate': true}
      else

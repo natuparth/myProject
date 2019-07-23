@@ -2,7 +2,7 @@ export class Item {
     
 name: String;
 quantity:number;
-dateOfLastPurchase:Date;
+date:Date;
 consumptionPerDay?:number;
 price:number;
 imageUrl?:String;
