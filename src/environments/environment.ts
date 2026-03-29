@@ -5,12 +5,7 @@
 export const environment = {
   production: false,
   firebase:{
-    apiKey: "AIzaSyCgn1KumHKiwtV_ZqpEPLozCTsfMkzjm50",
-    authDomain: "haveli-6e269.firebaseapp.com",
-    databaseURL: "https://haveli-6e269.firebaseio.com",
-    projectId: "haveli-6e269",
-    storageBucket: "haveli-6e269.appspot.com",
-    messagingSenderId: "36424835319"
+  
   }
 };
 
